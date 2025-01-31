@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 
 import {
   ColumnDef,
@@ -19,6 +19,8 @@ import {
   TableRow
 } from '@/components/ui/table'
 
+import { FadeLoader } from 'react-spinners'
+
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -29,15 +31,17 @@ import {
 } from '@/components/ui/select'
 import { Context } from './TableProvider'
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData, TValue, loadingState> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  loading: loadingState
 }
 
-function TableView<TData, TValue>({
+function TableView<TData, TValue, loadingState>({
   columns,
-  data
-}: DataTableProps<TData, TValue>) {
+  data,
+  loading
+}: DataTableProps<TData, TValue, loadingState>) {
   const [sorting, setSorting] = useState<SortingState>([])
 
   const context = useContext(Context)
@@ -77,29 +81,42 @@ function TableView<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
+            {loading ? (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className='h-24 text-center'>
-                  No results.
+                <TableCell colSpan={columns.length} className='h-30'>
+                  <div className='h-30 w-full flex flex-col justify-center items-center'>
+                    <FadeLoader color='#3498db' />
+                    Getting Records
+                  </div>
                 </TableCell>
               </TableRow>
+            ) : (
+              <>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map(row => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && 'selected'}>
+                      {row.getVisibleCells().map(cell => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className='h-24 text-center'>
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </>
             )}
           </TableBody>
         </Table>

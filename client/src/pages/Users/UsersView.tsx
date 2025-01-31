@@ -21,7 +21,7 @@ const UsersView = (props: any) => {
   const context = useContext(Context)
 
   const { state, actions } = context ?? {}
-  const { users } = state ?? {}
+  const { users, fetching } = state ?? {}
   const { handleGetAllUsers, handleAddUser, handleUpdateUser } = actions ?? {}
 
   const columns: ColumnDef<TUsers>[] = [
@@ -50,7 +50,6 @@ const UsersView = (props: any) => {
       header: 'Actions',
       accessorKey: '_id',
       cell: ({ row }) => {
-        const id = row.getValue('_id')
         return (
           <>
             <Button
@@ -170,7 +169,7 @@ const UsersView = (props: any) => {
         />
       </UserDialog>
       <div className='my-2'>
-        <Table columns={columns} data={users?.data} />
+        <Table columns={columns} data={users?.data} loading={fetching} />
       </div>
     </div>
   )

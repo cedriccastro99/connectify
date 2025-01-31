@@ -20,7 +20,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 
 const SignUpForm = (props: any) => {
-  const { form, onSubmit = () => {} } = props
+  const { form, onSubmit = () => {}, loading = false } = props
 
   const [isView, setIsView] = useState(false)
 
@@ -111,7 +111,11 @@ const SignUpForm = (props: any) => {
             />
           </CardContent>
           <CardFooter>
-            <Button type='submit'>Register</Button>
+            <Button type='submit' disabled={loading}>
+              {
+                loading? 'Registering...' : 'Register'
+              }
+            </Button>
           </CardFooter>
         </Card>
       </form>

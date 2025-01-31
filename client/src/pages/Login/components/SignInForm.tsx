@@ -21,7 +21,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const SignInForm = (props: any) => {
-  const { form, onSubmit = () => {} } = props
+  const { form, onSubmit = () => {}, loading = false } = props
 
   const [isView, setIsView] = useState(false)
 
@@ -85,7 +85,11 @@ const SignInForm = (props: any) => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type='submit'>Submit</Button>
+            <Button type='submit' disabled={loading}>
+              {
+                loading? 'Logging-in...' : 'Login'
+              }
+            </Button>
           </CardFooter>
         </Card>
       </form>

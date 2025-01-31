@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Context } from './LoginProvider'
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -14,6 +14,8 @@ const LoginView = (props: any) => {
   const { actions } = context ?? {}
 
   const { handleLogin, handleSignUp } = actions ?? {}
+
+  const [loading, setLoading] = useState(false);
 
   const login_formSchema = z.object({
     email: z.string().email('Invalid email address'),
@@ -55,19 +57,25 @@ const LoginView = (props: any) => {
 
   const login = async (data: TLoginUser) => {
     try {
+      setLoading(true)
       await handleLogin?.(data)
       login_form.reset()
     } catch(error) {
       console.error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
   const register = async (data: TNewUser) => {
     try {
+      setLoading(true)
       await handleSignUp?.(data)
       register_form.reset()
     } catch (error) {
       console.error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -75,7 +83,7 @@ const LoginView = (props: any) => {
     <div className='w-dvw h-dvh grid grid-cols-3'>
       <div className='col-span-1 flex items-center justify-center flex-col'>
         <h1 className='text-3xl font-bold text-black py-2'>Connectify</h1>
-          <LoginForm login_form={login_form} register_form={register_form} handleLogin={login} handleRegister={register} />
+        <LoginForm login_form={login_form} register_form={register_form} handleLogin={login} handleRegister={register} loading={loading} />
       </div>
       <div className='col-span-2 flex items-center justify-center'>
         <img src={appPhoto}/>

@@ -23,7 +23,7 @@ const ContactsView = (props: any) => {
 
   const { value } = state ?? {}
   const { user } = _state ?? {}
-  const { contacts = [] } = value?? {}
+  const { contacts = [], isFetching = false } = value?? {}
   const {
     handleGetAllContacts,
     handleCreateNewContact,
@@ -222,6 +222,7 @@ const ContactsView = (props: any) => {
       handleEdit={handleEdit} 
       handleDelete={handleConfirmationDialog}
       handleChange={debouncedSearch}
+      loading={isFetching}
     >
       <AlertDialog
         open={openConfirm}

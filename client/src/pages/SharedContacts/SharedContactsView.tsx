@@ -22,7 +22,7 @@ const SharedContactsView = (props: any) => {
 
   const { value } = state ?? {}
   const { user } = _state ?? {}
-  const { contacts = [] } = value?? {}
+  const { contacts = [], isFetching = false } = value?? {}
   const {
     handleGetAllContacts,
     handleCopyContact
@@ -146,6 +146,7 @@ const SharedContactsView = (props: any) => {
       contacts={contacts}
       handleEdit={handleView}
       handleChange={debouncedSearch}
+      loading={isFetching}
     >
       <ContactDialog
         key={'ContactDialog'}

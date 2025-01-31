@@ -15,16 +15,21 @@ interface ContextProps {
 export const Context = createContext<ContextProps | null>(null);
 const SharedContactsProvider = (props: any) => {
     const [contacts, setContacts] = useState([])
+    const [isFetching, setIsFetching] = useState(false)
     
-        const value = useMemo(() => ({ contacts }), [contacts])
+        const value = useMemo(() => ({ contacts, isFetching }), [contacts, isFetching])
+        
     
         const handleGetAllContacts = async (data?: TListParams) => {
             try {
+                setIsFetching(true)
                 const response = await getAllContacts(data)
                 setContacts(response.data)
             } catch (error) {
                 console.error(error)
                 throw error
+            } finally {
+                setIsFetching(false)
             }
         }
     

@@ -20,17 +20,20 @@ export const Context = createContext<ContextProps | null>(null);
 const ContactsProvider = (props: any) => {
 
     const [contacts, setContacts] = useState([])
+    const [isFetching, setIsFetching] = useState(false)
 
-    const value = useMemo(() => ({ contacts }), [contacts])
+    const value = useMemo(() => ({ contacts, isFetching }), [contacts, isFetching])
 
     const handleGetAllContacts = async (data?: TListParams) => {
-        console.log('%c Line:27 🍭 data', 'color:#6ec1c2', data);
+        setIsFetching(true)
         try {
             const response = await getAllContacts(data)
             setContacts(response.data)
         } catch (error) {
             console.error(error)
             throw error
+        } finally {
+            setIsFetching(false)
         }
     }
 

@@ -1,7 +1,6 @@
 import { resetPassword } from "@/services/api/handlers/users"
 import { TLoginUser } from "@/services/api/handlers/users/types"
 import { createContext } from "react"
-import { toast } from '@/hooks/use-toast'
 
 interface ContextProps {
   state: {};

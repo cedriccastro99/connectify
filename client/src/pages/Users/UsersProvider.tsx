@@ -16,9 +16,10 @@ const UsersProvider = (props: any) => {
         count: 0,
         data: [] as TUsers[]
     })
+    const [fetching, setFetching] = useState(false)
     const { toast } = useToast()
 
-    const value = useMemo(() => ({ users }), [users])
+    const value = useMemo(() => ({ users, fetching }), [users, fetching])
 
     const state = {
         ...value
@@ -26,11 +27,14 @@ const UsersProvider = (props: any) => {
 
     const handleGetAllUsers = async (data?: TListParams) => {
         try {
+            setFetching(true)
             const response = await getAllUsers(data)
             setUsers(response)
         } catch (error) {
             console.error(error)
             throw error
+        } finally {
+            setFetching(false)
         }
     }
     
