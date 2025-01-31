@@ -145,7 +145,7 @@ class ContactController {
   async list(req, res) {
     const {
       start = 0,
-      limit = 10,
+      limit = 50,
       sort = 'asc',
       sort_by = 'last_name',
       search = '',
